@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Milestone 1</title>
+</head>
+
+<body>
+    <div class="topnav">
+        <a href="/$web/Index.html">Home</a>
+        <a class="active" href="/$web/MS1.html">Milestone 1</a>
+        <a href="/$web/MS2.html">Milestone 2</a>
+        <a href="/$web/MS3.html">Milestone 3</a>
+        <a href="/$web/MS4.html">Milestone 4</a>
+    </div>
+    <div class="para-div div-list">
+
+        <h2 class="para-header-font">Bonus/Challenge</h2>
+        <div id="LCCN"></div><br><br>
+        <div id="ISBN"></div><br><br>
+        <a href="/$web/MS1.html">Back to Milestone 1</a><br><br>
+
+
+    </div>
+
+
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+
+
+
+
+            $(function () {
+
+                document.getElementById('LCCN').innerHTML = "";
+
+                document.getElementById('ISBN').innerHTML = "";
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://openlibrary.org/api/books?bibkeys=ISBN:0201558025,LCCN:93005405&format=json&jscmd=data',
+                    dataType: "json",
+                    success: function (data) {
+
+                        console.log(data['LCCN:93005405'].cover.medium);
+
+                        LCCN.innerHTML +=
+                            "<div><h4 class='unbold'><b class='bold'> Book Title: </b>" +
+                            data['LCCN:93005405'].title +
+                            "</h4><h4 class='unbold'><b class='bold'> Author(s): </b>" +
+                            data['LCCN:93005405'].authors[0].name +
+                            "</h4><h4 class='unbold'><b class='bold'> Publisher: </b>" +
+                            data['LCCN:93005405'].publishers[0].name +
+                            "</h4></h4><h4 class='unbold'><b class='bold'> Publish Date: </b>" +
+                            data['LCCN:93005405'].publish_date + "</h4><img src='" + data[
+                                'LCCN:93005405'].cover.medium +
+                            "' alt='cover-photo' /></div>";
+
+
+                        ISBN.innerHTML +=
+                            "<div><h4 class='unbold'><b class='bold'> Book Title: </b>" +
+                            data['ISBN:0201558025'].title +
+                            "</h4><h4 class='unbold'><b class='bold'> Author(s): </b>" +
+                            data['ISBN:0201558025'].authors[0].name +
+                            "</h4><h4 class='unbold'><b class='bold'> Publisher: </b>" +
+                            data['ISBN:0201558025'].publishers[0].name +
+                            "</h4></h4><h4 class='unbold'><b class='bold'> Publish Date: </b>" +
+                            data['ISBN:0201558025'].publish_date + "</h4><img src='" + data[
+                                'ISBN:0201558025'].cover.medium +
+                            "' alt='cover-photo' /></div>";
+
+
+                    }
+
+                });
+            });
+
+
+        });
+    </script>
+</body>
+
+</html>

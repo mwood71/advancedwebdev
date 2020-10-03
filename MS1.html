@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <title>Milestone 1</title>
+</head>
+
+<body>
+  <div class="topnav">
+    <a href="/$web/Index.html">Home</a>
+    <a class="active" href="/$web/MS1.html">Milestone 1</a>
+    <a href="/$web/MS2.html">Milestone 2</a>
+    <a href="/$web/MS3.html">Milestone 3</a>
+    <a href="/$web/MS4.html">Milestone 4</a>
+  </div>
+  <div class="para-div div-list">
+    <h1 class="para-header-font">Milestone 1</h1>
+
+    <div style="text-align: center;">
+      <p>Search the Google API either by the title or author of the book.<a href="/$web/Bonus.html">Challenge/Bonus Link</a></p>
+      <input id="searchInput" placeholder="Title or Author">
+      <input id="searchButton" type="button" value="Search">
+      <div id="searchResults"></div>
+
+    </div>
+
+
+  </div>
+
+
+  <script type="text/javascript">
+    document.getElementById('searchButton').addEventListener('click', bookSearch, false);
+
+    function bookSearch() {
+
+      var searchInput = document.getElementById('searchInput').value;
+      document.getElementById('searchResults').innerHTML = "";
+
+      if (searchInput === '') {
+        searchResults.innerHTML += "<div><hr><p>Cannot leave the input text blank.</p></div>";
+      }
+
+
+      $(function () {
+        $.ajax({
+          type: 'GET',
+          url: 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput,
+          dataType: "json",
+          success: function (data) {
+
+            for (var x = 0; x < data.items.length; x++) {
+              var id = data.items[x].id;
+
+              searchResults.innerHTML += "<div><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b>" +
+                data.items[x].volumeInfo.title +
+                "</h4><h4 class=\"unbold\"><b class=\"bold\"> Author(s): </b>" + data.items[x].volumeInfo
+                .authors + "</h4><button class='btn' data-id='" + id + "'>Details</button></div>";
+
+            }
+
+
+          }
+          
+        });
+      });
+    }
+
+    $("body").on("click tap", ".btn", function (event) {
+      var $target = $(event.target);
+      var id = $target.data("id");
+      var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+      document.getElementById('searchResults').innerHTML = "";
+      console.log(url);
+
+      $.ajax({
+        type: 'GET',
+        url: url,
+        dataType: "json",
+        success: function (data) {
+
+          if (data == null) {
+            searchResults.innerHTML = "<div>Unable to find details of book with id " + id + "</div>";
+
+          } else {
+            var imageURL = data.volumeInfo.imageLinks.thumbnail;
+            searchResults.innerHTML = "<div><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b>" +
+              data.volumeInfo.title + "</h4><h4 class=\"unbold\"><b class=\"bold\"> Author(s): </b>" + data
+              .volumeInfo.authors + "</h4><h4 class=\"unbold\"><b class=\"bold\"> Publisher: </b>" + data
+              .volumeInfo.publisher + "</h4><h4 class=\"unbold\"><b class=\"bold\"> Published Date: </b>" +
+              data.volumeInfo.publishedDate +
+              "</h4><h4 class=\"unbold\"><b class=\"bold\"> Page Count: </b>" + data.volumeInfo.pageCount +
+              "</h4><h4 class=\"unbold\"><b class=\"bold\"> Maturity Rating: </b>" + data.volumeInfo
+              .maturityRating + "</h4><h4 class=\"unbold\"><b class=\"bold\"> Language: </b>" + data
+              .volumeInfo.language + "</h4><img src='" + imageURL +
+              "'/><br/><br/><button onclick='bookSearch()'>Back to List</button></div>";
+          }
+        }
+      });
+
+    });
+  </script>
+</body>
+
+</html>
