@@ -7,24 +7,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@500&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <title>Milestone 1</title>
 </head>
 
 <body>
-  <div class="topnav">
-    <a href="/advancedwebdev/Index.html">Home</a>
-    <a class="active" href="/advancedwebdev/MS1.html">Milestone 1</a>
-    <a href="/advancedwebdev/MS2.html">Milestone 2</a>
-    <a href="/advancedwebdev/MS3.html">Milestone 3</a>
-    <a href="/advancedwebdev/MS4.html">Milestone 4</a>
-  </div>
+  <div id="nav-placeholder" class="topnav"></div>
   <div class="para-div div-list">
     <h1 class="para-header-font">Milestone 1</h1>
 
     <div style="text-align: center;">
-      <p>Search the Google API either by the title or author of the book.<a href="/advancedwebdev/Bonus.html">Challenge/Bonus Link</a></p>
+      <p>Search the Google API either by the title or author of the book.<a href="/Milestone1/Bonus.html">Challenge/Bonus Link</a></p>
       <input id="searchInput" placeholder="Title or Author">
       <input id="searchButton" type="button" value="Search">
       <div id="searchResults"></div>
@@ -37,6 +31,10 @@
 
   <script type="text/javascript">
     document.getElementById('searchButton').addEventListener('click', bookSearch, false);
+
+    $(function(){
+      $("#nav-placeholder").load("../nav.html");
+    });
 
     function bookSearch() {
 

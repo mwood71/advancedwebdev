@@ -5,17 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"> 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@500&display=swap" rel="stylesheet"> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <title>Project</title>
 </head>
 <body>
-    <div class="topnav">
-        <a class="active" href="/advancedwebdev/Index.html">Home</a>
-        <a href="/advancedwebdev/MS1.html">Milestone 1</a>
-        <a href="/advancedwebdev/MS2.html">Milestone 2</a>
-        <a href="/advancedwebdev/MS3.html">Milestone 3</a>
-        <a href="/advancedwebdev/MS4.html">Milestone 4</a>
-      </div> 
+      <div id="nav-placeholder" class="topnav"></div>  
       <div class="para-div div-list">
         <h1 class="para-header-font">Individual Project</h1>
         <ul class="para-text-font" >
@@ -39,19 +34,19 @@
                 </tr>
                 <tr>
                     <td>Milestone 1</td>
-                    <td><a href="/advancedwebdev/MS1.html">Page Link</a></td>
+                    <td><a href="/Milestone1/MS1.html">Page Link</a></td>
                 </tr>
                 <tr>
                     <td>Milestone 2</td>
-                    <td><a href="/advancedwebdev/MS2.html">Page Link</a></td>
+                    <td><a href="/Milestone2/MS2.html">Page Link</a></td>
                 </tr>
                 <tr>
                     <td>Milestone 3</td>
-                    <td><a href="/advancedwebdev/MS3.html">Page Link</a></td>
+                    <td><a href="/Milestone3/MS3.html">Page Link</a></td>
                 </tr>
                 <tr>
                     <td>Milestone 4</td>
-                    <td><a href="/advancedwebdev/MS4.html">Page Link</a></td>
+                    <td><a href="/Milestone4/MS4.html">Page Link</a></td>
                 </tr>
             </table>
 
@@ -61,5 +56,13 @@
        
 
       </div> 
+
+      <script type="text/javascript">
+
+        $(function(){
+          $("#nav-placeholder").load("nav.html");
+        });
+      
+      </script>
 </body>
 </html>

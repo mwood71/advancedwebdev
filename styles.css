@@ -1,12 +1,12 @@
 body {
     margin: 0;
-    background-color: #5CDB95;
+    background-color: #A9A9A9;
    
   }
   
   .topnav {
     overflow: hidden;
-    background-color: #5CDB95;
+    background-color: #A9A9A9;
   }
   
   .topnav a {
@@ -20,14 +20,6 @@ body {
   
   .topnav a:hover {
     color: #EDF5E1;
-  }
-  
-  .topnav a.active {
-    color: #EDF5E1;
-  }
-
-  .topnav a.active:hover {
-    color: #05386B;
   }
   
   .para-header-font{
@@ -98,4 +90,6 @@ hr{
   color : #EDF5E1;
 
 }
+
+
 

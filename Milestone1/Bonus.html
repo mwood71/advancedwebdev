@@ -7,25 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:wght@500&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Milestone 1</title>
 </head>
 
 <body>
-    <div class="topnav">
-        <a href="/advancedwebdev/Index.html">Home</a>
-        <a class="active" href="/advancedwebdev/MS1.html">Milestone 1</a>
-        <a href="/advancedwebdev/MS2.html">Milestone 2</a>
-        <a href="/advancedwebdev/MS3.html">Milestone 3</a>
-        <a href="/advancedwebdev/MS4.html">Milestone 4</a>
-    </div>
+    <div id="nav-placeholder" class="topnav"></div>
     <div class="para-div div-list">
 
         <h2 class="para-header-font">Bonus/Challenge</h2>
         <div id="LCCN"></div><br><br>
         <div id="ISBN"></div><br><br>
-        <a href="/advancedwebdev/MS1.html">Back to Milestone 1</a><br><br>
+        <a href="/Milestone1/MS1.html">Back to Milestone 1</a><br><br>
 
 
     </div>
@@ -33,6 +27,10 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function ($) {
+
+            $(function(){
+                $("#nav-placeholder").load("../nav.html");
+            });
 
 
 

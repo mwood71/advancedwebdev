@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="MS2Style.css">
+    <title>Milestone 2</title>
+</head>
+
+<body>
+
+    <div id="nav-placeholder" class="topnav"></div>
+
+    <ul class="navbar">
+        <li class="nav-option"><a href="/advancedwebdev/Milestone2/MS2.html">Home</a></li>
+        <li class="nav-option"><a class="active" href="/advancedwebdev/Milestone2/Search.html">Search Book</a></li>
+        <li class="nav-option"><a href="/advancedwebdev/Milestone2/Bookshelf.html">My Bookshelf</a></li>
+    </ul>
+    <div style="margin-left:25%;margin-top:70px;padding:1px 16px;height:1000px;">
+        <h2 style="color: #05386B;">Milestone 2</h2>
+        <p style="color: white;">To search the Google Book API type in a keyword followed by clicking the 'search' button:</p>
+        <input id="searchInput" placeholder="Keyword">
+        <input id="searchButton" type="button" value="Search">
+        <div id="searchResults"></div>
+
+        <div style="padding-bottom: 300px;padding-top: 50px;;">
+            <ul id="nav">
+                <li><a>Pages</a>
+                <ul id="pages">
+
+                </ul>
+
+            </ul>
+        </div>
+
+    </div>
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("#nav-placeholder").load("../nav.html");
+            $( '#nav' ).hide();
+        });
+
+        document.getElementById('searchButton').addEventListener('click', bookSearch, false);
+
+        function bookSearch() {
+
+            var searchInput = document.getElementById('searchInput').value;
+            document.getElementById('searchResults').innerHTML = "";
+
+            if (searchInput === '') {
+                searchResults.innerHTML += "<div><hr><p>Cannot leave the input text blank.</p></div>";
+            }
+
+
+            $(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput +
+                        '&maxResults=40',
+                    dataType: "json",
+                    success: function (data) {
+
+                        for (var x = 0; x < data.items.length; x++) {
+                            var id = data.items[x].id;
+                            var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
+
+                            searchResults.innerHTML +=
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='"+ id +"'>" +
+                                data.items[x].volumeInfo.title +
+                                "</a></h4><img src='" + imageURL +"'/></div>";
+
+                        }
+                        $.ajax({
+                            type: 'GET',
+                            url: 'https://www.googleapis.com/books/v1/volumes?q=' +
+                                searchInput + '&maxResults=20&startIndex=40',
+                            dataType: "json",
+                            success: function (data) {
+
+                                for (var x = 0; x < data.items.length; x++) {
+                                    var id = data.items[x].id;
+                                    var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
+
+                                    searchResults.innerHTML +=
+                                    "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='"+ id +"'>" +
+                                    data.items[x].volumeInfo.title +
+                                    "</a></h4><img src='" + imageURL +"'/></div>";
+
+                                }
+
+                                pageSize = 10;
+                                $( '#nav' ).show();
+
+                                $(function () {
+                                    
+                                    var pageCount = Math.ceil($(".line-content").length / pageSize);
+                                    
+                                    $("#pages").empty();
+
+                                    for (var i = 0; i < pageCount; i++) {
+                                        if (i == 0)
+                                            $("#pages").append(
+                                                '<li><a class="current" href="#">' +
+                                                (i + 1) + '</a></li>');
+                                                
+                                        else
+                                            $("#pages").append(
+                                                '<li><a href="#">' + (i + 1) +
+                                                '</a></li>');
+                                    }
+
+                                    
+                                    
+                                   
+
+
+                                    showPage(1);
+
+                                    $("#pages li a").click(function () {
+                                        $("#pages li a").removeClass(
+                                            "current");
+                                        $(this).addClass("current");
+                                        showPage(parseInt($(this)
+                                            .text()))
+                                    });
+
+                                })
+
+                                showPage = function (page) {
+                                    $(".line-content").hide();
+
+                                    $(".line-content").each(function (n) {
+                                        if (n >= pageSize * (page - 1) &&
+                                            n < pageSize * page)
+                                            $(this).show();
+                                    });
+                                }
+
+                            }
+                        });
+
+
+                    }
+
+                });
+            });
+        }
+
+        $("body").on("click tap", ".btn", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+            document.getElementById('searchResults').innerHTML = "";
+            $( '#nav' ).hide();
+            
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: "json",
+                success: function (data) {
+
+                    if (data == null) {
+                        searchResults.innerHTML =
+                            "<div>Unable to find details of book with id " + id +
+                            "</div>";
+
+                    } else {
+                        var imageURL = data.volumeInfo.imageLinks.thumbnail;
+                        searchResults.innerHTML =
+                            "<div><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b>" +
+                            data.volumeInfo.title +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Author(s): </b>" +
+                            data
+                            .volumeInfo.authors +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Publisher: </b>" +
+                            data
+                            .volumeInfo.publisher +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Saleability: </b>" +
+                            data.saleInfo.saleability +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Description: </b>" +
+                            data.volumeInfo.description +
+                            "</h4><img src='" + imageURL +
+                            "'/><br/><br/><button onclick='bookSearch()'>Back to List</button></div>";
+                    }
+                }
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>
