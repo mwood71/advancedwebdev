@@ -122,10 +122,10 @@
                             var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
 
                             bookshelf.innerHTML +=
-                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><button style=\"color:white\" class=\"btn\" data-id='" +
                                 id + "'>" +
                                 data.items[x].volumeInfo.title +
-                                "</a></h4><img src='" + imageURL + "'/><div id='" + data.items[x]
+                                "</button></h4><img src='" + imageURL + "'/><div id='" + data.items[x]
                                 .volumeInfo.title + "'></div></div>";
 
                         }
@@ -174,8 +174,8 @@
                             data.saleInfo.saleability +
                             "</h4><h4 class=\"unbold\"><b class=\"bold\"> Description: </b>" +
                             data.volumeInfo.description +
-                            "</h4><br/><br/><a style=\"color:#05386B\" class=\"dropdown\" href=\"#\" data-id='" +
-                            variable + "'>Close View</a></div>";
+                            "</h4><br/><br/><button style=\"color:#05386B\" class=\"dropdown\" data-id='" +
+                            variable + "'>Close View</button></div>";
                     }
                 }
 
@@ -247,10 +247,10 @@
                             var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
 
                             searchResults.innerHTML +=
-                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><button style=\"color:white\" class=\"btn\" data-id='" +
                                 id + "'>" +
                                 data.items[x].volumeInfo.title +
-                                "</a></h4><img src='" + imageURL + "'/><div id='" + data.items[x]
+                                "</button></h4><img src='" + imageURL + "'/><div id='" + data.items[x]
                                 .volumeInfo.title + "'></div></div>";
 
                         }
@@ -267,10 +267,10 @@
                                         .thumbnail;
 
                                     searchResults.innerHTML +=
-                                        "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                        "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><button style=\"color:white\" class=\"btn\" data-id='" +
                                         id + "'>" +
                                         data.items[x].volumeInfo.title +
-                                        "</a></h4><img src='" + imageURL +
+                                        "</button></h4><img src='" + imageURL +
                                         "'/><div id='" + data.items[x].volumeInfo
                                         .title + "'></div></div>";
 
@@ -371,8 +371,8 @@
                             data.saleInfo.saleability +
                             "</h4><h4 class=\"unbold\"><b class=\"bold\"> Description: </b>" +
                             data.volumeInfo.description +
-                            "</h4><br/><br/><a style=\"color:#05386B\" class=\"dropdown\" href=\"#\" data-id='" +
-                            variable + "'>Close View</a></div></div>";
+                            "</h4><br/><br/><button style=\"color:#05386B\" class=\"dropdown\" data-id='" +
+                            variable + "'>Close View</button></div></div>";
                     }
                 }
             });
@@ -411,10 +411,10 @@
                             var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
 
                             searchResults.innerHTML +=
-                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><button style=\"color:white\" class=\"btn\" data-id='" +
                                 id + "'>" +
                                 data.items[x].volumeInfo.title +
-                                "</a></h4><img src='" + imageURL + "'/><div id='" + data
+                                "</button></h4><img src='" + imageURL + "'/><div id='" + data
                                 .items[x]
                                 .volumeInfo.title + "'></div></div>";
 
@@ -433,10 +433,10 @@
                                         .thumbnail;
 
                                     searchResults.innerHTML +=
-                                        "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                        "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><button style=\"color:white\" class=\"btn\" data-id='" +
                                         id + "'>" +
                                         data.items[x].volumeInfo.title +
-                                        "</a></h4><img src='" + imageURL +
+                                        "</button></h4><img src='" + imageURL +
                                         "'/><div id='" + data.items[x]
                                         .volumeInfo
                                         .title + "'></div></div>";

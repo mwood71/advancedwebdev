@@ -37,3 +37,25 @@ body {
   font-size: large;
   font-weight: bold;
 }
+
+.btn {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+  text-decoration:underline;
+  display:inline-block;
+}
+
+.dropdown {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+  text-decoration:underline;
+  display:inline-block;
+}
