@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="MS3Style.css">
+    <title>Milestone 3</title>
+</head>
+
+<body>
+
+    <div id="nav-placeholder" class="topnav"></div>
+
+    <div id="page">
+
+        <div id="home">
+            <h1 style="color: #05386B;">Milestone 3</h1>
+            <p style="color: white;">The "Search" button allows to query the Google Book API and the "My Bookshelf" button displays my Google Book
+                API bookshelf:</p>
+            <ul class = "menu" style="list-style-type: none;">
+                <li><button id="SearchBtn">Search</button></li>
+                <li><button id="MyBookshelfBtn">My Bookshelf</button></li>
+            </ul>
+    
+        </div>
+    
+        <div id="bookshelfTitle">
+    
+            <h1 style="color: #05386B;">My Bookshelf</h1>
+            <button id="HomeBtn2">Back to Main Page</button>
+            <p style="color: white;">Select book title to display the details about the book: </p>
+    
+            <div id="bookshelf">Bookshelf</div>
+    
+        </div>
+    
+    
+    
+        <div id="search">
+
+            <h1 style="color: #05386B;">Book Search</h1>
+            <button id="HomeBtn1">Back to Main Page</button>
+            <p style="color: white;">To search the Google Book API type in a keyword followed by clicking the 'Search'
+                button. You can view the search history by clicking the 'Search History' button. Also, you can navigate to the previous screen by clicking on the 'Back to Main Page' button: </p>
+            <input id="searchInput" placeholder="Keyword">
+            <input id="searchButton" type="button" value="Search">
+            <input id="searchHistory" type="button" value="Search History">
+            <div id="searchResults"></div>
+    
+    
+            <div style="padding-bottom: 300px;padding-top: 50px;;">
+                <ul id="nav">
+    
+    
+                </ul>
+            </div>
+    
+        </div>
+        <div id="history">
+            <h1 style="color: #05386B;">Previous Searches</h1>
+            <button id="SearchBtn2">Back to Search</button>
+            <button id="HomeBtn3">Back to Main Page</button>
+            <p style="color: white;">You can click on the previous search in order to search it again: </p>
+
+            <ul class = "menu" style="list-style-type: none;" id="historyList">
+
+            </ul>
+        </div>
+
+    </div>
+
+    
+
+
+
+    <script type="text/javascript">
+        var searches = [];
+
+        $(function () {
+            $("#nav-placeholder").load("../nav.html");
+            $('#nav').hide();
+            $('#search').hide();
+            $('#bookshelf').hide();
+            $('#bookshelfTitle').hide();
+            $('#history').hide();
+        });
+
+
+
+        document.getElementById('MyBookshelfBtn').addEventListener('click', myBookshelf, false);
+        document.getElementById('SearchBtn').addEventListener('click', search, false);
+        document.getElementById('SearchBtn2').addEventListener('click', search, false);
+        document.getElementById('searchButton').addEventListener('click', bookSearch, false);
+        document.getElementById('HomeBtn1').addEventListener('click', home, false);
+        document.getElementById('HomeBtn2').addEventListener('click', home, false);
+        document.getElementById('HomeBtn3').addEventListener('click', home, false);
+        document.getElementById('searchHistory').addEventListener('click', history, false);
+
+
+
+
+        function myBookshelf() {
+            $('#home').hide();
+            $('#bookshelf').show();
+            $('#bookshelfTitle').show();
+            $('#history').hide();
+
+            $("#bookshelf").empty();
+            $(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://www.googleapis.com/books/v1/users/111513740495408725450/bookshelves/1001/volumes',
+                    dataType: "json",
+                    success: function (data) {
+
+                        for (var x = 0; x < data.items.length; x++) {
+                            var id = data.items[x].id;
+                            var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
+
+                            bookshelf.innerHTML +=
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                id + "'>" +
+                                data.items[x].volumeInfo.title +
+                                "</a></h4><img src='" + imageURL + "'/><div id='" + data.items[x]
+                                .volumeInfo.title + "'></div></div>";
+
+                        }
+
+
+                    }
+
+                });
+            });
+        }
+
+        $("body").on("click tap", ".btn", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+
+
+
+
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: "json",
+                success: function (data) {
+
+                    var variable = data.volumeInfo.title;
+                    document.getElementById(variable).innerHTML = "";
+
+
+                    if (data == null) {
+                        document.getElementById(variable).innerHTML =
+                            "<div><hr/>Unable to find details of book with id " + id +
+                            "</div>";
+
+                    } else {
+                        var imageURL = data.volumeInfo.imageLinks.thumbnail;
+                        document.getElementById(variable).innerHTML =
+                            "<div><h4 class=\"unbold\"><b class=\"bold\"> Author(s): </b>" +
+                            data
+                            .volumeInfo.authors +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Publisher: </b>" +
+                            data
+                            .volumeInfo.publisher +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Saleability: </b>" +
+                            data.saleInfo.saleability +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Description: </b>" +
+                            data.volumeInfo.description +
+                            "</h4><br/><br/><a style=\"color:#05386B\" class=\"dropdown\" href=\"#\" data-id='" +
+                            variable + "'>Close View</a></div>";
+                    }
+                }
+
+
+            });
+
+        });
+
+        $("body").on("click tap", ".dropdown", function (event) {
+
+            var $target = $(event.target);
+            var id = $target.data("id");
+            document.getElementById(id).innerHTML = "";
+
+        });
+
+        function search() {
+            $('#home').hide();
+            $('#search').show();
+            $('#bookshelf').empty();
+            $('#searchResults').empty();
+            $('#nav').empty();
+            $('#bookshelf').hide();
+            $('#bookshelfTitle').hide();
+            $('#history').hide();
+
+        }
+
+        function home() {
+
+            $('#home').show();
+            $('#bookshelf').hide();
+            $('#bookshelfTitle').hide();
+            $('#search').hide();
+            $('#history').hide();
+
+        }
+
+        function bookSearch(event) {
+
+            var $target = $(event.target);
+            var id = $target.data("id");
+
+            $('#searchResults').show();
+            $('#nav').show();
+            $('#history').hide();
+
+            var searchInput = document.getElementById('searchInput').value;
+
+            searches.push(searchInput);
+
+            document.getElementById('searchResults').innerHTML = "";
+
+            if (searchInput === '') {
+                searchResults.innerHTML += "<div><hr><p>Cannot leave the input text blank.</p></div>";
+            }
+
+
+            $(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput +
+                        '&maxResults=40',
+                    dataType: "json",
+                    success: function (data) {
+
+                        for (var x = 0; x < data.items.length; x++) {
+                            var id = data.items[x].id;
+                            var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
+
+                            searchResults.innerHTML +=
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                id + "'>" +
+                                data.items[x].volumeInfo.title +
+                                "</a></h4><img src='" + imageURL + "'/><div id='" + data.items[x]
+                                .volumeInfo.title + "'></div></div>";
+
+                        }
+                        $.ajax({
+                            type: 'GET',
+                            url: 'https://www.googleapis.com/books/v1/volumes?q=' +
+                                searchInput + '&maxResults=10&startIndex=40',
+                            dataType: "json",
+                            success: function (data) {
+
+                                for (var x = 0; x < data.items.length; x++) {
+                                    var id = data.items[x].id;
+                                    var imageURL = data.items[x].volumeInfo.imageLinks
+                                        .thumbnail;
+
+                                    searchResults.innerHTML +=
+                                        "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                        id + "'>" +
+                                        data.items[x].volumeInfo.title +
+                                        "</a></h4><img src='" + imageURL +
+                                        "'/><div id='" + data.items[x].volumeInfo
+                                        .title + "'></div></div>";
+
+
+                                }
+
+                                pageSize = 10;
+                                $('#nav').show();
+
+                                $(function () {
+
+                                    var pageCount = Math.ceil($(".line-content")
+                                        .length / pageSize);
+
+                                    $("#nav").empty();
+
+                                    for (var i = 0; i < pageCount; i++) {
+                                        if (i == 0)
+                                            $("#nav").append(
+                                                '<li><a class="current" href="#">' +
+                                                (i + 1) + '</a></li>');
+
+                                        else
+                                            $("#nav").append(
+                                                '<li><a href="#">' + (i + 1) +
+                                                '</a></li>');
+                                    }
+
+
+
+
+
+
+                                    showPage(1);
+
+                                    $("#nav li a").click(function () {
+                                        $("#nav li a").removeClass(
+                                            "current");
+                                        $(this).addClass("current");
+                                        showPage(parseInt($(this)
+                                            .text()))
+                                    });
+
+                                })
+
+                                showPage = function (page) {
+                                    $(".line-content").hide();
+
+                                    $(".line-content").each(function (n) {
+                                        if (n >= pageSize * (page - 1) &&
+                                            n < pageSize * page)
+                                            $(this).show();
+                                    });
+                                }
+
+                            }
+                        });
+
+
+                    }
+
+                });
+            });
+        }
+
+        $("body").on("click tap", ".btn", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+
+
+
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: "json",
+                success: function (data) {
+
+                    var variable = data.volumeInfo.title;
+                    document.getElementById(variable).innerHTML = "";
+
+                    if (data == null) {
+                        document.getElementById(variable).innerHTML =
+                            "<div>Unable to find details of book with id " + id +
+                            "</div>";
+
+                    } else {
+                        var imageURL = data.volumeInfo.imageLinks.thumbnail;
+                        document.getElementById(variable).innerHTML =
+                            "<div><h4 class=\"unbold\"><b class=\"bold\"> Author(s): </b>" +
+                            data
+                            .volumeInfo.authors +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Publisher: </b>" +
+                            data
+                            .volumeInfo.publisher +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Saleability: </b>" +
+                            data.saleInfo.saleability +
+                            "</h4><h4 class=\"unbold\"><b class=\"bold\"> Description: </b>" +
+                            data.volumeInfo.description +
+                            "</h4><br/><br/><a style=\"color:#05386B\" class=\"dropdown\" href=\"#\" data-id='" +
+                            variable + "'>Close View</a></div></div>";
+                    }
+                }
+            });
+
+        });
+
+        $("body").on("click tap", ".historySearch", function (event) {
+
+            var $target = $(event.target);
+            var id = $target.data("id");
+
+            $('#history').hide();
+            $('#search').show();
+            $('#nav').show();
+
+            var searchInput = id;
+            document.getElementById("searchInput").value = id;
+
+            document.getElementById('searchResults').innerHTML = "";
+
+            if (searchInput === '') {
+                searchResults.innerHTML += "<div><hr><p>Cannot leave the input text blank.</p></div>";
+            }
+
+
+            $(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput +
+                        '&maxResults=40',
+                    dataType: "json",
+                    success: function (data) {
+
+                        for (var x = 0; x < data.items.length; x++) {
+                            var id = data.items[x].id;
+                            var imageURL = data.items[x].volumeInfo.imageLinks.thumbnail;
+
+                            searchResults.innerHTML +=
+                                "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                id + "'>" +
+                                data.items[x].volumeInfo.title +
+                                "</a></h4><img src='" + imageURL + "'/><div id='" + data
+                                .items[x]
+                                .volumeInfo.title + "'></div></div>";
+
+                        }
+                        $.ajax({
+                            type: 'GET',
+                            url: 'https://www.googleapis.com/books/v1/volumes?q=' +
+                                searchInput + '&maxResults=10&startIndex=40',
+                            dataType: "json",
+                            success: function (data) {
+
+                                for (var x = 0; x < data.items.length; x++) {
+                                    var id = data.items[x].id;
+                                    var imageURL = data.items[x].volumeInfo
+                                        .imageLinks
+                                        .thumbnail;
+
+                                    searchResults.innerHTML +=
+                                        "<div class=\"line-content\"><hr><h4 class=\"unbold\"><b class=\"bold\"> Book Title: </b><a style=\"color:white\" class=\"btn\" href=\"#\" data-id='" +
+                                        id + "'>" +
+                                        data.items[x].volumeInfo.title +
+                                        "</a></h4><img src='" + imageURL +
+                                        "'/><div id='" + data.items[x]
+                                        .volumeInfo
+                                        .title + "'></div></div>";
+
+
+                                }
+
+                                pageSize = 10;
+                                $('#nav').show();
+
+                                $(function () {
+
+                                    var pageCount = Math.ceil($(
+                                            ".line-content")
+                                        .length / pageSize);
+
+                                    $("#nav").empty();
+
+                                    for (var i = 0; i <
+                                        pageCount; i++) {
+                                        if (i == 0)
+                                            $("#nav").append(
+                                                '<li><a class="current" href="#">' +
+                                                (i + 1) + '</a></li>');
+
+                                        else
+                                            $("#nav").append(
+                                                '<li><a href="#">' + (
+                                                    i + 1) +
+                                                '</a></li>');
+                                    }
+
+
+
+
+
+
+                                    showPage(1);
+
+                                    $("#nav li a").click(function () {
+                                        $("#nav li a")
+                                            .removeClass(
+                                                "current");
+                                        $(this).addClass(
+                                            "current");
+                                        showPage(parseInt($(
+                                                this)
+                                            .text()))
+                                    });
+
+                                })
+
+                                showPage = function (page) {
+                                    $(".line-content").hide();
+
+                                    $(".line-content").each(function (n) {
+                                        if (n >= pageSize * (page -
+                                                1) &&
+                                            n < pageSize * page)
+                                            $(this).show();
+                                    });
+                                }
+
+                            }
+                        });
+
+
+                    }
+
+                });
+            });
+
+
+
+        });
+
+        function history() {
+
+            $('#search').hide();
+            $('#nav').hide();
+            $('#history').show();
+
+
+
+            var result = "";
+
+            for (i = 0; i < searches.length; i++) {
+
+
+                result += "<li><a style=\"color:#05386B\" class=\"historySearch\" href=\"#\" data-id='" +
+                    searches[i] + "'>" + searches[i] + "</a></li><br/><br/>"
+
+
+            }
+            document.getElementById('historyList').innerHTML = result;
+
+        }
+    </script>
+
+
+</body>
+
+</html>

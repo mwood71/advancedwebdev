@@ -1,0 +1,39 @@
+body {
+    margin: 2px;
+}
+
+#page {
+
+  margin-top: 100px;
+  margin-bottom: 100px;
+  margin-right: 150px;
+  margin-left: 80px;
+
+}
+
+.menu li{
+  display: inline;
+}
+
+#nav li a {
+
+  color: #f1f1f1;
+  font-size: large;
+  font-weight: bold;
+
+}
+
+#nav li {
+  display:inline
+}
+
+#nav li {
+  margin-left: 40px;
+}
+
+#nav li .current {
+
+  color: #05386B;
+  font-size: large;
+  font-weight: bold;
+}
