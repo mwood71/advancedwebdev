@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Milestone 4</title>
+</head>
+
+<body>
+
+    <div id="editor">
+        <div id="editorDisplay">
+            <button id="editorListBtn2">List</button>
+            <button id="editorGridBtn">Grid</button>
+            <button id="returnToSearch">Back to Search</button>
+        </div>
+
+        <div id="editorList">
+            <div id="editorList1"></div>
+            <div id="editorList2"></div>
+        </div>
+
+        <div id="editorGrid">
+            <section id="editorGridContainers" class="products">
+                <div class="product-card" id="editorGridContainer1"></div>
+                <div class="product-card" id="editorGridContainer2"></div>
+            </section>
+            
+        </div>
+        <div id="editorGridDetails"></div>
+
+    </div>
+
+
+
+    <div id="nonEditor">
+        <div id="searchDisplay">
+            <button id="searchMenu">New Search</button>
+            <button id="showList">List</button>
+            <button id="showGrid">Grid</button>
+            <button id="editorListBtn1">Editor Recommendation</button>
+        </div>
+
+        <div id="search">
+            <input id="searchInput" placeholder="Keyword">
+            <input id="searchButton" type="button" value="Search"><br>
+            <div id="searchResults"></div>
+        </div>
+
+        <div id="list">
+            <div id="list1"></div>
+            <div id="list2"></div>
+            <div id="list3"></div>
+            <div id="list4"></div>
+        </div>
+
+        <div id="grid">
+            <section id="gridContainers" class="products">
+                <div class="product-card" id="gridContainer1"></div>
+                <div class="product-card" id="gridContainer2"></div>
+                <div class="product-card" id="gridContainer3"></div>
+                <div class="product-card" id="gridContainer4"></div>
+                <div class="product-card" id="gridContainer5"></div>
+                <div class="product-card" id="gridContainer6"></div>
+                <div class="product-card" id="gridContainer7"></div>
+                <div class="product-card" id="gridContainer8"></div>
+            </section>
+
+            <div id="gridDetails">
+
+            </div>
+
+            <div id="gridButtons" style="text-align: center;">
+                <button id="moreGrid1">See more results</button>
+                <button id="moreGrid2">See more results</button>
+                <button id="moreGrid3">See more results</button>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"
+        integrity="sha512-6AXIWogbKpsHvoZJrJtHpIYES4wP8czSj0zk7ZfwOYS8GWYFNSykwdfapt7yQc4ikZytemBu+QyVObzBHJMwYg=="
+        crossorigin="anonymous"></script>
+
+    <script id="gridBookSearch" type="text/template">
+
+        <div id="{{selfLink}}" class="product-info">
+            
+            <button class="btn button" data-id="{{id}}">{{volumeInfo.title}}</button>
+            <img src="{{volumeInfo.imageLinks.thumbnail}}"/>
+            <div id="{{id}}"></div>
+            <br/>
+            <span><button data-id="{{id}}" class="btn">{{volumeInfo.title}}</button></span>
+            <hr/>
+            <br/>
+                
+        </div>
+            
+    </script>
+    <script id="gridBookDetails" type="text/template">
+
+        <p><b>Author:</b> {{volumeInfo.authors}}</p>
+            <p><b>Publisher:</b> {{volumeInfo.publisher}}</p>
+            <p><b>Publish Date:</b> {{volumeInfo.publishedDate}}</p>
+            <p><b>Page Count:</b> {{volumeInfo.pageCount}}</p>
+            <p><b>Average Rating:</b> {{volumeInfo.averageRating}}</p>
+            <p><b>Rating Count:</b> {{volumeInfo.ratingsCount}}</p>
+            <p><b>Maturity Rating:</b> {{volumeInfo.maturityRating}}</p>
+            <p><b>Description:</b> {{volumeInfo.description}}</p>
+            <span><button class="gridBtnClose">Close Details</button></span>    
+
+            
+    </script>
+
+    <script id="editorGridBookDetails" type="text/template">
+
+        <p><b>Author:</b> {{volumeInfo.authors}}</p>
+            <p><b>Publisher:</b> {{volumeInfo.publisher}}</p>
+            <p><b>Publish Date:</b> {{volumeInfo.publishedDate}}</p>
+            <p><b>Page Count:</b> {{volumeInfo.pageCount}}</p>
+            <p><b>Average Rating:</b> {{volumeInfo.averageRating}}</p>
+            <p><b>Rating Count:</b> {{volumeInfo.ratingsCount}}</p>
+            <p><b>Maturity Rating:</b> {{volumeInfo.maturityRating}}</p>
+            <p><b>Description:</b> {{volumeInfo.description}}</p>
+            <span><button class="editorGridBtnClose">Close Details</button></span>    
+
+            
+    </script>
+
+    <script id="bookSearch" type="text/template">
+
+        <h3><b>Book Title: </b><button class="btn" data-id="{{id}}">{{volumeInfo.title}}</button></h3>
+        <img src="{{volumeInfo.imageLinks.thumbnail}}"/>
+        <div id="{{id}}"></div>
+        <br/>
+        <hr/>
+        <br/>
+        
+    </script>
+
+    <script id="editorGridTemplate" type="text/template">
+
+        <div id="{{selfLink}}" class="product-info">
+            
+            <button class="btn button" data-id="{{id}}">{{volumeInfo.title}}</button>
+            <img src="{{volumeInfo.imageLinks.thumbnail}}"/>
+            <div id="{{id}}"></div>
+            <br/>
+            <span><button data-id="{{id}}" class="editorGridBtn">{{volumeInfo.title}}</button></span>
+            <hr/>
+            <br/>
+                
+        </div>
+            
+    </script>
+
+    <script id="editorListTemplate" type="text/template">
+
+        <h3><b>Book Title: </b><button class="editorBtn" data-id="{{id}}">{{volumeInfo.title}}</button></h3>
+        <img src="{{volumeInfo.imageLinks.thumbnail}}"/>
+        <div id="{{id}}"></div>
+        <br/>
+        <hr/>
+        <br/>
+        
+    </script>
+
+    <script id="bookDetails" type="text/template">
+
+        <p><b>Author:</b> {{volumeInfo.authors}}</p>
+        <p><b>Publisher:</b> {{volumeInfo.publisher}}</p>
+        <p><b>Publish Date:</b> {{volumeInfo.publishedDate}}</p>
+        <p><b>Page Count:</b> {{volumeInfo.pageCount}}</p>
+        <p><b>Average Rating:</b> {{volumeInfo.averageRating}}</p>
+        <p><b>Rating Count:</b> {{volumeInfo.ratingsCount}}</p>
+        <p><b>Maturity Rating:</b> {{volumeInfo.maturityRating}}</p>
+        <p><b>Description:</b> {{volumeInfo.description}}</p>
+        <button data-id="{{id}}" class="btnClose">Close Details</button>
+        
+    </script>
+
+
+    <script type="text/javascript">
+        $('#grid').hide();
+        $('#list').hide();
+        $('#searchDisplay').show();
+        $('#editor').hide();
+        $('#nonEditor').show();
+
+        document.getElementById('searchMenu').addEventListener('click', showSearch, false);
+        document.getElementById('showList').addEventListener('click', showList, false);
+        document.getElementById('showGrid').addEventListener('click', showGrid, false);
+        document.getElementById('moreGrid1').addEventListener('click', moreGrid1, false);
+        document.getElementById('moreGrid2').addEventListener('click', moreGrid2, false);
+        document.getElementById('moreGrid3').addEventListener('click', moreGrid3, false);
+        document.getElementById('searchButton').addEventListener('click', search, false);
+        document.getElementById('editorListBtn1').addEventListener('click', editorList, false);
+        document.getElementById('editorListBtn2').addEventListener('click', editorList, false);
+        document.getElementById('editorGridBtn').addEventListener('click', editorGrid, false);
+        document.getElementById('returnToSearch').addEventListener('click', returnToSearch, false);
+
+        function returnToSearch(){
+            $('#editor').hide();
+            $('#nonEditor').show();
+
+        }
+
+        function editorGrid() {
+            $('#editorGridContainer1').show();
+            $('#editorGridContainer2').show();
+            $('#editorList').hide();
+            $('#editorGrid').show();
+        }
+
+
+        function editorList() {
+
+            $('#nonEditor').hide();
+            $('#editor').show();
+            $('#editorList').show();
+            $('#editorGridContainer1').hide();
+            $('#editorGridContainer2').hide();
+            $('#editorList2').hide();
+            $('#editorMoreResults').hide();
+
+            document.getElementById('editorGridContainer1').innerHTML = "";
+            document.getElementById('editorGridContainer2').innerHTML = "";
+            document.getElementById('editorList1').innerHTML = "";
+            document.getElementById('editorList2').innerHTML = "";
+
+            $(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://www.googleapis.com/books/v1/users/111513740495408725450/bookshelves/1001/volumes',
+                    dataType: "json",
+                    success: function (data) {
+
+                        for (x = 0; x < data.items.length; x++) {
+
+                            var template1 = $('#editorListTemplate').html();
+                            var html1 = Mustache.render(template1, data.items[x]);
+
+                            var template2 = $('#editorGridTemplate').html();
+                            var html2 = Mustache.render(template2, data.items[x]);
+
+                            if (x < 3){
+                                document.getElementById('editorList1').innerHTML += html1;
+
+                            } else {
+                                if (x === 3){
+                                    document.getElementById('editorList1').innerHTML += ("<button id=\"editorMoreResults\">See More Results</button>");
+                                }
+
+                                document.getElementById('editorList2').innerHTML += html1;
+                            }
+                            
+                            if (x < 5){
+
+                                document.getElementById('editorGridContainer1').innerHTML += html2;
+
+                            }
+                            else{
+
+                                document.getElementById('editorGridContainer2').innerHTML += html2;
+                            }
+
+                        }
+                        document.getElementById('editorMoreResults').addEventListener('click', editorMoreResults,
+                        false);
+
+                    }
+
+                });
+            });
+        }
+        function editorMoreResults(){
+            $('#editorList2').show();
+            $('#editorMoreResults').hide();
+
+        }
+
+        function showList() {
+            $('#list').show();
+            $('#grid').hide();
+        }
+
+        function showSearch() {
+            $('#search').show();
+            $('#searchDisplay').hide();
+            $('#grid').hide();
+            $('#list').hide();
+
+            document.getElementById('list1').innerHTML = "";
+            document.getElementById('list2').innerHTML = "";
+            document.getElementById('list3').innerHTML = "";
+            document.getElementById('list4').innerHTML = "";
+
+            document.getElementById('gridContainer1').innerHTML = "";
+            document.getElementById('gridContainer2').innerHTML = "";
+            document.getElementById('gridContainer3').innerHTML = "";
+            document.getElementById('gridContainer4').innerHTML = "";
+            document.getElementById('gridContainer5').innerHTML = "";
+            document.getElementById('gridContainer6').innerHTML = "";
+            document.getElementById('gridContainer7').innerHTML = "";
+            document.getElementById('gridContainer8').innerHTML = "";
+
+        }
+
+        function showGrid() {
+            $('#list').hide();
+            $('#editor').hide();
+            
+ 
+            $('#grid').show();
+            $('#gridContainer1').show();
+            $('#gridContainer2').show();
+            $('#gridContainer3').hide();
+            $('#gridContainer4').hide();
+            $('#gridContainer5').hide();
+            $('#gridContainer6').hide();
+            $('#gridContainer7').hide();
+            $('#gridContainer8').hide();
+            $('#moreGrid2').hide();
+            $('#moreGrid3').hide();
+            $('#moreGrid1').show();
+        }
+
+        function search() {
+
+            document.getElementById('list1').innerHTML = "";
+            document.getElementById('list2').innerHTML = "";
+            document.getElementById('list3').innerHTML = "";
+            document.getElementById('list4').innerHTML = "";
+
+            document.getElementById('gridContainer1').innerHTML = "";
+            document.getElementById('gridContainer2').innerHTML = "";
+            document.getElementById('gridContainer3').innerHTML = "";
+            document.getElementById('gridContainer4').innerHTML = "";
+            document.getElementById('gridContainer5').innerHTML = "";
+            document.getElementById('gridContainer6').innerHTML = "";
+            document.getElementById('gridContainer7').innerHTML = "";
+            document.getElementById('gridContainer8').innerHTML = "";
+
+            $('#list').show();
+            $('#list1').show();
+            $('#list2').hide();
+            $('#list3').hide();
+            $('#list4').hide();
+            $('#grid').hide();
+            $('#searchDisplay').hide();
+
+
+            var searchInput = document.getElementById('searchInput').value;
+
+
+            if (searchInput === '') {
+                searchResults.innerHTML = "<hr><p>Cannot leave the input text blank.</p>";
+                return
+            }
+
+            searchResults.innerHTML = "";
+
+            $.ajax({
+                type: 'GET',
+                url: 'https://www.googleapis.com/books/v1/volumes?q=' + searchInput + '&maxResults=40',
+                dataType: "json",
+                success: function (data) {
+
+                    for (x = 0; x < data.items.length; x++) {
+
+                        var template = $('#bookSearch').html();
+                        var html = Mustache.render(template, data.items[x]);
+
+                        var gridTemplate = $('#gridBookSearch').html();
+                        var gridHtml = Mustache.render(gridTemplate, data.items[x]);
+
+                        if (x < 9) {
+
+                            if (x < 5) {
+                                document.getElementById('gridContainer1').innerHTML += gridHtml;
+                            } else {
+                                document.getElementById('gridContainer2').innerHTML += gridHtml;
+                            }
+
+
+                            document.getElementById('list1').innerHTML += html;
+                            if (x === 8) {
+                                document.getElementById('list1').innerHTML += (
+                                    "<button id=\"MoreResultsBtn1\">See More Results</button>");
+                            }
+                        } else if (x > 8 && x < 19) {
+
+                            if (x === 9) {
+                                document.getElementById('gridContainer2').innerHTML += gridHtml;
+                            }
+
+                            document.getElementById('list2').innerHTML += html;
+                            if (x === 18) {
+                                document.getElementById('list2').innerHTML += (
+                                    "<button id=\"MoreResultsBtn2\">See More Results</button>");
+                            }
+                            if (x != 9 && x < 15) {
+                                document.getElementById('gridContainer3').innerHTML += gridHtml;
+                            } else {
+                                document.getElementById('gridContainer4').innerHTML += gridHtml;
+                            }
+                        } else if (x > 18 && x < 29) {
+
+                            document.getElementById('list3').innerHTML += html;
+                            if (x === 28) {
+                                document.getElementById('list3').innerHTML += (
+                                    "<button id=\"MoreResultsBtn3\">See More Results</button>");
+                            }
+
+                            if (x === 19) {
+                                document.getElementById('gridContainer4').innerHTML += gridHtml;
+                            }
+
+                            if (x != 19 && x < 25) {
+                                document.getElementById('gridContainer5').innerHTML += gridHtml;
+                            } else {
+                                document.getElementById('gridContainer6').innerHTML += gridHtml;
+                            }
+                        } else {
+
+                            document.getElementById('list4').innerHTML += html;
+
+                            if (x === 29) {
+                                document.getElementById('gridContainer6').innerHTML += gridHtml;
+                            }
+
+                            if (x > 29 && x < 35) {
+                                document.getElementById('gridContainer7').innerHTML += gridHtml;
+                            } else if (x > 34 && x < 40) {
+                                document.getElementById('gridContainer8').innerHTML += gridHtml;
+                            }
+                        }
+
+                    }
+                    document.getElementById('MoreResultsBtn1').addEventListener('click', MoreResults1,
+                        false);
+                    document.getElementById('MoreResultsBtn2').addEventListener('click', MoreResults2,
+                        false);
+                    document.getElementById('MoreResultsBtn3').addEventListener('click', MoreResults3,
+                        false);
+                    $('#search').hide();
+                    $('#searchDisplay').show();
+                }
+            });
+        }
+
+        $("body").on("click tap", ".btn", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            $('#' + id).show();
+            var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+
+            document.getElementById('gridDetails').innerHTML = "";
+
+            $('#gridDetails').show();
+            $('#editorGrid').hide();
+            $('#gridContainers').hide();
+            $('#gridButtons').hide();
+
+
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: "json",
+                success: function (data) {
+
+
+                    var template = $('#bookDetails').html();
+                    var html = Mustache.render(template, data);
+                    document.getElementById(id).innerHTML = html;
+
+                    var template2 = $('#gridBookDetails').html();
+                    var html2 = Mustache.render(template2, data);
+                    document.getElementById('gridDetails').innerHTML = html2;
+
+                    
+                    
+
+                }
+
+
+            });
+
+        });
+
+
+        
+        $("body").on("click tap", ".editorGridBtn", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            $('#' + id).show();
+            $('#editorGridDetails').show();
+            var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+
+            document.getElementById('gridDetails').innerHTML = "";
+
+            $('#editorGrid').hide();
+
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: "json",
+                success: function (data) {
+
+
+                    var gridTemplate = $('#editorGridBookDetails').html();
+                    var gridHtml = Mustache.render(gridTemplate, data);
+                    document.getElementById('editorGridDetails').innerHTML = gridHtml;
+                    
+
+                }
+
+
+            });
+
+        });
+
+
+
+        $("body").on("click tap", ".editorBtn", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            $('#' + id).show();
+            var url = 'https://www.googleapis.com/books/v1/volumes/' + id;
+
+            document.getElementById('gridDetails').innerHTML = "";
+
+
+            $('#editorGridDetails').hide();
+            $('#editorGrid').hide();
+
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: "json",
+                success: function (data) {
+
+
+                    var template = $('#bookDetails').html();
+                    var html = Mustache.render(template, data);
+                    document.getElementById(id).innerHTML = html;
+
+
+
+                    var gridTemplate = $('#editorGridBookDetails').html();
+                    var gridHtml = Mustache.render(gridTemplate, data);
+                    document.getElementById('editorGridDetails').innerHTML = gridHtml;
+                    
+
+                }
+
+
+            });
+
+        });
+
+        $("body").on("click tap", ".btnClose", function (event) {
+            var $target = $(event.target);
+            var id = $target.data("id");
+            $('#' + id).hide();
+
+
+        });
+
+        $("body").on("click tap", ".gridBtnClose", function (event) {
+            $('#gridButtons').show();
+            $('#gridContainers').show();
+            $('#gridDetails').hide();
+            
+        });
+
+        $("body").on("click tap", ".editorGridBtnClose", function (event) {
+
+            $('#editorGridDetails').hide();
+            $('#editorGrid').show();
+            $('#editorGridContainers').show();
+            $('#editorGridContainer1').show();
+            $('#editorGridContainer2').show();
+ 
+
+        })
+
+
+        function MoreResults1() {
+            $('#list2').show();
+            $('#MoreResultsBtn1').hide();
+
+        }
+
+        function MoreResults2() {
+            $('#list3').show();
+            $('#MoreResultsBtn2').hide();
+        }
+
+        function MoreResults3() {
+            $('#list4').show();
+            $('#MoreResultsBtn3').hide();
+        }
+
+        function moreGrid1() {
+            $('#gridContainer3').show();
+            $('#gridContainer4').show();
+            $('#moreGrid1').hide();
+            $('#moreGrid2').show();
+        }
+
+        function moreGrid2() {
+            $('#gridContainer5').show();
+            $('#gridContainer6').show();
+            $('#moreGrid2').hide();
+            $('#moreGrid3').show();
+        }
+
+        function moreGrid3() {
+            $('#gridContainer7').show();
+            $('#gridContainer8').show();
+            $('#moreGrid3').hide();
+        }
+    </script>
+</body>
+
+</html>
