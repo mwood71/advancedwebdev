@@ -114,6 +114,12 @@ hr{
 
 }
 
+.editorGridBtn{
+
+  cursor:pointer;
+
+}
+
 .product-info {
   margin-top: auto;
 }

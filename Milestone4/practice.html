@@ -11,6 +11,15 @@
 
 <body>
 
+    <div id="homeScreen">
+        <h1 style="color: #05386B;">Milestone 4</h1>
+            <p style="color: white;">The "Search" button allows to query the Google Book API and the "Bookshelf" button displays the editor's recommendation Google Book
+                API bookshelf:</p>
+            <button id="searchOption">Search</button>
+            <button id="bookshelfOption">Bookshelf</button>
+
+    </div>
+
     <div id="editor">
         <div id="editorDisplay">
             <button id="editorListBtn2">List</button>
@@ -94,10 +103,9 @@
         <div id="{{selfLink}}" class="product-info">
             
             <button class="btn button" data-id="{{id}}">{{volumeInfo.title}}</button>
-            <img src="{{volumeInfo.imageLinks.thumbnail}}"/>
+            <img data-id="{{id}}" class="btn" src="{{volumeInfo.imageLinks.thumbnail}}"/>
             <div id="{{id}}"></div>
             <br/>
-            <span><button data-id="{{id}}" class="btn">{{volumeInfo.title}}</button></span>
             <hr/>
             <br/>
                 
@@ -150,10 +158,9 @@
         <div id="{{selfLink}}" class="product-info">
             
             <button class="btn button" data-id="{{id}}">{{volumeInfo.title}}</button>
-            <img src="{{volumeInfo.imageLinks.thumbnail}}"/>
+            <img class="editorGridBtn" data-id="{{id}}" src="{{volumeInfo.imageLinks.thumbnail}}"/>
             <div id="{{id}}"></div>
             <br/>
-            <span><button data-id="{{id}}" class="editorGridBtn">{{volumeInfo.title}}</button></span>
             <hr/>
             <br/>
                 
@@ -188,12 +195,10 @@
 
 
     <script type="text/javascript">
-        $('#grid').hide();
-        $('#list').hide();
-        $('#searchDisplay').show();
-        $('#editor').hide();
-        $('#nonEditor').show();
 
+        $('#editor').hide();
+        $('#nonEditor').hide();
+       
         document.getElementById('searchMenu').addEventListener('click', showSearch, false);
         document.getElementById('showList').addEventListener('click', showList, false);
         document.getElementById('showGrid').addEventListener('click', showGrid, false);
@@ -205,6 +210,19 @@
         document.getElementById('editorListBtn2').addEventListener('click', editorList, false);
         document.getElementById('editorGridBtn').addEventListener('click', editorGrid, false);
         document.getElementById('returnToSearch').addEventListener('click', returnToSearch, false);
+        document.getElementById('searchOption').addEventListener('click', searchOption, false);
+        document.getElementById('bookshelfOption').addEventListener('click', editorList, false);
+
+        function searchOption(){
+
+            $('#grid').hide();
+            $('#list').hide();
+            $('#searchDisplay').show();
+            $('#editor').hide();
+            $('#nonEditor').show();
+            $('#homeScreen').hide();
+
+        }
 
         function returnToSearch(){
             $('#editor').hide();
@@ -229,6 +247,8 @@
             $('#editorGridContainer2').hide();
             $('#editorList2').hide();
             $('#editorMoreResults').hide();
+            $('#homeScreen').hide();
+            $('#editorGridDetails').hide()
 
             document.getElementById('editorGridContainer1').innerHTML = "";
             document.getElementById('editorGridContainer2').innerHTML = "";
